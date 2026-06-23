@@ -8,27 +8,39 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('beneficiarios', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-        Schema::table('productos', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-        Schema::table('entregas', function (Blueprint $table) {
-            $table->softDeletes();
-        });
+        if (Schema::hasTable('beneficiarios') && !Schema::hasColumn('beneficiarios', 'deleted_at')) {
+            Schema::table('beneficiarios', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+        if (Schema::hasTable('productos') && !Schema::hasColumn('productos', 'deleted_at')) {
+            Schema::table('productos', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+        if (Schema::hasTable('entregas') && !Schema::hasColumn('entregas', 'deleted_at')) {
+            Schema::table('entregas', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('beneficiarios', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
-        Schema::table('productos', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
-        Schema::table('entregas', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        if (Schema::hasTable('beneficiarios') && Schema::hasColumn('beneficiarios', 'deleted_at')) {
+            Schema::table('beneficiarios', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
+        if (Schema::hasTable('productos') && Schema::hasColumn('productos', 'deleted_at')) {
+            Schema::table('productos', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
+        if (Schema::hasTable('entregas') && Schema::hasColumn('entregas', 'deleted_at')) {
+            Schema::table('entregas', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
     }
 };
