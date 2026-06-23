@@ -524,7 +524,6 @@ class AdminController extends Controller
             'Se eliminó el producto: ' . $prod->nombre
         );
         $prod->delete();
-        Producto::findOrFail($id)->delete();
 
         return redirect()->route('admin.productos')
             ->with('success', 'Producto eliminado del inventario.');
