@@ -16,7 +16,6 @@ return new class extends Migration
             $table->mediumText('value');
             $table->integer('expiration')->index();
         });
-
         Schema::create('cache_locks', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->string('owner');
@@ -27,9 +26,12 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function up(): void
     {
-        Schema::dropIfExists('cache');
-        Schema::dropIfExists('cache_locks');
+        if (Schema::hasTable('actividad_logs') && !Schema::hasColumn('actividad_logs', 'metadata')) {
+            Schema::table('actividad_logs', function (Blueprint $table) {
+                $table->json('metadata')->nullable()->after('ip');
+            });
+        }
     }
 };
